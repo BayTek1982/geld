@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bayazit Geld-Schule</title>
+<meta name="description" content="Wie Geld entstand – von der Kaurimuschel bis zum Bitcoin. Lern-App mit kleinen Videos und Quiz.">
+<meta name="theme-color" content="#070b10">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#070b10;--bg2:#0b1119;--card:#0e1620;--card2:#121c28;--line:#1c2836;--tx:#e6edf5;--mut:#8796a8;--gold:#f5c542;--green:#22c55e;--red:#f43f5e;--blue:#3b82f6;--cv:#090f16;--grid:#121b26;
+--mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Mono",Menlo,Consolas,"Roboto Mono",monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color-scheme:dark}
+[data-theme=light]{--bg:#eef2f6;--bg2:#e6ebf1;--card:#ffffff;--card2:#f6f8fb;--line:#d6dee7;--tx:#0d1520;--mut:#566475;--gold:#b7860b;--green:#15803d;--red:#e11d48;--blue:#2563eb;--cv:#fbfcfe;--grid:#edf1f5;color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--tx);font-family:var(--sans);-webkit-text-size-adjust:100%}
+body{min-height:100vh;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.mono{font-family:var(--mono)}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:800;letter-spacing:.04em;font-size:15px;white-space:nowrap}
+.logo .dia{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:linear-gradient(135deg,#eab308,#f97316);color:#111;font-size:14px}
+.logo small{color:var(--mut);font-weight:600;font-size:10px;display:block;letter-spacing:.14em}
+.theme{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+.theme button{padding:6px 9px;font-size:12px;font-family:var(--mono);color:var(--mut);white-space:nowrap}
+.theme button span{display:none}@media (min-width:520px){.theme button span{display:inline}}.theme button{padding:7px 11px;font-size:14px}
+.theme button.on{background:var(--card2);color:var(--tx);box-shadow:inset 0 -2px 0 #eab308}
+.layout{display:block;max-width:1240px;margin:0 auto}
+aside.side{display:none}
+main{padding:16px 14px 60px;max-width:860px;margin:0 auto}
+@media (min-width:900px){
+ .layout{display:grid;grid-template-columns:290px 1fr;gap:0}
+ aside.side{display:block;position:sticky;top:57px;height:calc(100vh - 57px);overflow:auto;border-right:1px solid var(--line);padding:14px}
+ main{padding:24px 28px 80px;width:100%}
+}
+.search{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:inherit;font-size:14px;outline:none}
+.search:focus{border-color:#eab308}
+.sgrp{margin-top:14px}
+.sgrp h4{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--ac);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.sgrp a{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:8px;font-size:13.5px;color:var(--mut)}
+.sgrp a:hover{background:var(--card);color:var(--tx)}
+.sgrp a.act{background:var(--card2);color:var(--tx);box-shadow:inset 3px 0 0 var(--ac)}
+.sgrp a .ck{margin-left:auto;color:var(--green);font-size:12px}
+.side .sq{display:block;margin-top:16px;padding:10px;border-radius:10px;border:1px solid var(--line);font-family:var(--mono);font-size:12px;text-align:center;background:var(--card)}
+.hero{padding:6px 2px 16px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--mut)}
+.hero h1{font-family:var(--mono);font-size:30px;line-height:1.1;margin:6px 0 6px;letter-spacing:-.01em}
+.hero h1 span{background:linear-gradient(90deg,#eab308,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mut);font-size:15px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{font-family:var(--mono);font-size:11px;padding:5px 9px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--mut)}
+.chip b{color:var(--tx)}
+.bento{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tile{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:18px;padding:16px;background:linear-gradient(160deg,color-mix(in srgb,var(--ac) 16%,var(--card)) 0%,var(--card) 60%);min-height:170px;display:flex;flex-direction:column;transition:transform .15s,border-color .15s}
+.tile:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--ac) 60%,var(--line))}
+.tile:first-child{grid-column:span 2}
+.tile::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:var(--ac);opacity:.10;filter:blur(8px)}
+.ti-top{display:flex;justify-content:space-between;align-items:flex-start}
+.ti-ico{font-size:40px;line-height:1}
+.ti-num{font-family:var(--mono);font-size:12px;color:var(--ac);font-weight:700;border:1px solid color-mix(in srgb,var(--ac) 50%,transparent);padding:2px 7px;border-radius:7px}
+.tile h2{font-family:var(--mono);font-size:15px;letter-spacing:.06em;margin-top:12px;color:var(--ac);line-height:1.25}
+.tile p{font-size:13px;color:var(--mut);margin-top:4px;flex:1}
+.prog{height:6px;border-radius:9px;background:color-mix(in srgb,var(--ac) 15%,var(--line));margin-top:12px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--ac);border-radius:9px}
+.ti-foot{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:6px;letter-spacing:.06em}
+@media (min-width:640px){.bento{grid-template-columns:repeat(3,1fr)}.tile:first-child{grid-column:span 2}.hero h1{font-size:38px}}
+.back{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;color:var(--mut);padding:7px 11px;border:1px solid var(--line);border-radius:10px;background:var(--card);margin-bottom:14px}
+.back:hover{color:var(--tx)}
+.ahead{border:1px solid var(--line);border-radius:18px;padding:18px;background:linear-gradient(150deg,color-mix(in srgb,var(--ac) 18%,var(--card)),var(--card) 70%);margin-bottom:14px}
+.ahead .ti-ico{font-size:46px}
+.ahead h1{font-family:var(--mono);font-size:22px;color:var(--ac);margin-top:8px;letter-spacing:.03em}
+.ahead p{color:var(--mut);font-size:14px}
+.lgrid{display:grid;gap:10px}
+@media (min-width:640px){.lgrid{grid-template-columns:1fr 1fr}}
+.lcard{display:block;position:relative;border:1px solid var(--line);border-left:4px solid var(--ac);border-radius:14px;padding:13px 14px;background:var(--card)}
+.lcard:hover{background:var(--card2)}
+.lk{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--ac);font-weight:700}
+.lcard b{display:block;font-size:16px;margin-top:2px;padding-right:26px}
+.lcard .lsub{display:block;font-size:12.5px;color:var(--mut);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lcard .done{position:absolute;right:12px;top:12px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:color-mix(in srgb,var(--green) 20%,transparent);color:var(--green);font-weight:800}
+.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ac);font-weight:700}
+.ltitle{font-family:var(--mono);font-size:22px;margin:4px 0 12px;line-height:1.2}
+.player{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--cv)}
+.player canvas{display:block;width:100%;aspect-ratio:400/240;cursor:pointer}
+.cap{padding:12px 14px;border-top:1px solid var(--line);background:var(--card);min-height:86px}
+.cap .sn{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ac);font-weight:700}
+.cap p{font-size:15px;margin-top:3px}
+.ctrl{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card2);border-top:1px solid var(--line)}
+.pbtn{width:40px;height:40px;flex:0 0 40px;border-radius:50%;background:var(--ac);color:#0b0f14;display:grid;place-items:center;font-size:16px;font-weight:900}
+input[type=range]{flex:1;accent-color:var(--ac);height:28px}
+.tm{font-family:var(--mono);font-size:11px;color:var(--mut);min-width:68px;text-align:right}
+.ctrl2{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:0 12px 12px;background:var(--card2)}
+.sbtn{font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--mut);min-width:34px}
+.sbtn.on{border-color:var(--ac);color:var(--tx);background:color-mix(in srgb,var(--ac) 18%,var(--card))}
+.ctrl2 .gap{flex:1}
+.info{display:grid;gap:10px;margin-top:14px}
+@media (min-width:640px){.info{grid-template-columns:1fr 1fr}}
+.ibox{border:1px solid var(--line);border-top:3px solid var(--c);border-radius:14px;padding:12px 14px;background:var(--card)}
+.ibox h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--c);margin-bottom:4px}
+.ibox p{font-size:14px}
+.lnav{display:flex;gap:10px;margin-top:16px}
+.lnav a{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--card);font-size:13px}
+.lnav a small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--mut)}
+.lnav a.nx{text-align:right}
+.lnav a.dis{opacity:.35;pointer-events:none}
+.qcard{border:1px solid var(--line);border-radius:18px;padding:18px;background:var(--card)}
+.qtop{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--mut)}
+.qbar{height:6px;border-radius:9px;background:var(--line);margin:8px 0 14px;overflow:hidden}
+.qbar i{display:block;height:100%;background:#f43f5e}
+.qq{font-size:18px;font-weight:650;margin-bottom:12px}
+.qimg{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px;background:var(--cv)}
+.qimg canvas{display:block;width:100%;aspect-ratio:400/240}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card2);font-size:15px}
+.opt:hover:not([disabled]){border-color:var(--mut)}
+.opt.ok{border-color:var(--green);background:color-mix(in srgb,var(--green) 16%,var(--card))}
+.opt.no{border-color:var(--red);background:color-mix(in srgb,var(--red) 14%,var(--card))}
+.fb{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--line)}
+.fb b{font-family:var(--mono)}
+.fb .go{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:12px;color:var(--blue)}
+.big{display:block;width:100%;margin-top:14px;padding:13px;border-radius:12px;background:#f43f5e;color:#fff;font-family:var(--mono);font-weight:800;letter-spacing:.06em;text-align:center}
+.score{font-family:var(--mono);font-size:48px;font-weight:800;text-align:center;margin:8px 0}
+.rep a{display:block;padding:9px 12px;border:1px solid var(--line);border-radius:10px;margin-top:6px;background:var(--card2);font-size:14px}
+.foot{margin-top:28px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--mut);letter-spacing:.08em}
+</style>
+</head>
+<body>
+<header class="top">
+ <a class="logo" href="#home"><span class="dia">◆</span><span>GELD-SCHULE<small>BAYAZIT · LERN-APP</small></span></a>
+ <div class="theme" id="theme">
+  <button data-m="dark" title="Dunkel">☾<span> Dunkel</span></button><button data-m="light" title="Hell">☀<span> Hell</span></button><button data-m="auto" title="Automatisch">◐<span> Auto</span></button>
+ </div>
+</header>
+<div class="layout">
+ <aside class="side" id="side"></aside>
+ <main id="main"></main>
+</div>
+<script>
+"use strict";
+/* ============ Speicher ============ */
+const KEY='geldschule-v1';
+let ST={seen:{},best:0,runs:0};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)ST=Object.assign(ST,s);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
+
+/* ============ Bereiche ============ */
+const AREAS=[
+ {id:'vor',name:'Vor dem Geld',icon:'🐚',col:'#f97316',desc:'Selbstversorgung, Tauschhandel, Warengeld und die ersten Schulden.'},
+ {id:'muenzen',name:'Münzen',icon:'🪙',col:'#eab308',desc:'Metall als Geld, die erste Münze, Römer, Taler und Betrug.'},
+ {id:'papier',name:'Papiergeld',icon:'📜',col:'#38bdf8',desc:'China, Goldschmiede, erste Banken und der Goldstandard.'},
+ {id:'modern',name:'Modernes Geld',icon:'🏦',col:'#a78bfa',desc:'Zentralbanken, 1971, Giralgeld, Inflation, D-Mark und Euro.'},
+ {id:'digital',name:'Digitales Geld',icon:'💳',col:'#10b981',desc:'Karte, Handy, Bitcoin, digitaler Euro und die Zukunft.'}
+];
+const QUIZCOL='#f43f5e';
+
+/* ============ Szenen-Bausteine (virtuell 400 × 240) ============ */
+const E=(ch,x,y,s=36,o={})=>({t:'emo',ch,x,y,s,...o});
+const P=(tx,x,y,c='a',o={})=>({t:'pill',tx,x,y,c,...o});
+const A=(x1,y1,x2,y2,c='mut',o={})=>({t:'arr',x1,y1,x2,y2,c,...o});
+const T=(tx,x,y,s=12,c='txt',b=0,o={})=>({t:'txt',tx,x,y,s,c,b,...o});
+const C=(x,y,r,m='gold',tx='',o={})=>({t:'coin',x,y,r,m,tx,...o});
+const N=(x,y,w,h,tx,c='gold',o={})=>({t:'note',x,y,w,h,tx,c,...o});
+const B=(x,y,w,h,c,tx='',o={})=>({t:'box',x,y,w,h,c,tx,...o});
+const BAR=(x,y,w,h,c,top,bot)=>({t:'bar',x,y,w,h,c,top,bot});
+const X=(x,y,s=18)=>({t:'x',x,y,s});
+const K=(x,y,s=18)=>({t:'chk',x,y,s});
+const LN=(pts,c='a')=>({t:'line',pts,c});
+const KB=(x,y,w,n,half=0,o={})=>({t:'kerb',x,y,w,n,half,...o});
+const S=(say,add,clear=0)=>({say,add,clear});
+
+/* ============ Lektionen ============ */
+const L=[
+/* ---------- VOR DEM GELD ---------- */
+{id:'selbst',a:'vor',t:'Selbstversorgung',steps:[
+ S('Vor über 10.000 Jahren lebten die Menschen als Jäger und Sammler. Jede Gruppe besorgte sich alles selbst.',[P('JÄGER & SAMMLER',200,30),E('🏕️',200,105,54)]),
+ S('Gejagt, gesammelt, gefischt: Was man brauchte, holte man sich direkt aus der Natur.',[E('🦌',60,190,34),E('🫐',200,200,28),E('🐟',340,190,34),A(80,170,165,125),A(200,180,200,140),A(320,170,235,125)]),
+ S('Mit der Sesshaftigkeit begannen die Menschen, Felder zu bestellen und Tiere zu halten.',[P('SESSHAFT · ca. 10.000 v. Chr.',200,30),E('🌾',80,105,46),E('🐄',200,105,46),E('🏠',320,105,46)],1),
+ S('Plötzlich gab es Überschüsse: mehr Getreide, als eine Familie selbst essen konnte.',[E('🌾',55,160,28),E('🌾',105,160,28),P('ÜBERSCHUSS',80,195,'gold')]),
+ S('Die Menschen spezialisierten sich – der eine wurde Bauer, der andere Töpfer oder Fischer. Jetzt musste man tauschen.',[E('🏺',320,165,30),P('SPEZIALISIERUNG',260,215,'a')])
+],info:{was:'Selbstversorgung heißt: Jede Familie oder Gruppe stellt alles, was sie braucht, selbst her oder holt es aus der Natur.',so:'Ohne Überschüsse gab es nichts zu tauschen. Erst Ackerbau und Viehzucht brachten mehr, als man selbst verbrauchte.',bed:'Überschuss und Spezialisierung sind der Anfang jeder Wirtschaft – und der Grund, warum Menschen später Geld brauchten.',tipp:'Merke dir die Kette: Sesshaftigkeit → Überschuss → Spezialisierung → Tausch → Geld.'}},
+
+{id:'tausch',a:'vor',t:'Tauschhandel',steps:[
+ S('Der Bauer hat viel Getreide, aber keinen Fisch. Der Fischer hat Fisch, aber kein Getreide.',[P('BAUER',90,40),E('🧑‍🌾',90,95,46),E('🌾',90,160,30),P('FISCHER',310,40),E('🎣',310,95,46),E('🐟',310,160,30)]),
+ S('Beide treffen sich und tauschen direkt: Ware gegen Ware.',[A(130,150,270,150,'gold'),A(270,172,130,172,'gold'),P('WARE GEGEN WARE',200,215,'a')]),
+ S('Sie müssen sich einigen, wie viel was wert ist – zum Beispiel 3 Säcke Getreide für 2 Fische.',[T('3 Getreide = 2 Fische',200,100,13,'gold',1)]),
+ S('Der Tausch klappt – aber nur, solange beide genau das wollen, was der andere hat.',[K(200,62,22)])
+],info:{was:'Beim Tauschhandel wird eine Ware direkt gegen eine andere Ware getauscht – ganz ohne Geld.',so:'Beide Seiten müssen etwas haben, das die andere Seite gerade haben will, und sich auf ein Verhältnis einigen.',bed:'Tausch funktioniert in kleinen Gruppen. Je mehr Menschen und Waren es gibt, desto komplizierter wird er.',tipp:'Auch heute wird noch getauscht: zum Beispiel auf Tauschbörsen oder unter Nachbarn („Hilfst du mir, helfe ich dir“).'}},
+
+{id:'problem',a:'vor',t:'Das Problem des Tauschs',steps:[
+ S('Der Schuster will Brot. Der Bäcker hat Brot – braucht aber gerade keine Schuhe.',[P('SCHUSTER',80,35),E('👞',80,90,40),P('BÄCKER',320,35),E('🍞',320,90,40),A(120,90,280,90,'mut'),X(200,90)]),
+ S('Fachleute nennen das: Es fehlt die doppelte Übereinstimmung der Wünsche.',[P('DOPPELTE ÜBEREINSTIMMUNG FEHLT',200,160,'red')]),
+ S('Zweites Problem: Eine Kuh kann man nicht teilen, wenn man nur ein Brot haben will.',[E('🐄',110,100,56),T('= ?',200,102,22,'mut',1),E('🍞',290,100,36),P('NICHT TEILBAR',200,180,'red')],1),
+ S('Drittes Problem: Fisch und Obst verderben – ihren Wert kann man nicht lange aufbewahren.',[E('🐟',110,100,44),A(150,100,250,100,'mut'),E('🗑️',290,100,40),P('NICHT HALTBAR',200,180,'red')],1),
+ S('Und: Bei 10 Waren gibt es schon 45 verschiedene Tauschverhältnisse. Man brauchte ein gemeinsames Maß – das Geld.',[T('10 Waren → 45 Preise',200,85,18,'txt',1),T('n · (n − 1) ÷ 2',200,120,14,'mut',1),P('LÖSUNG: GELD',200,180,'green')],1)
+],info:{was:'Der reine Tausch hat drei große Schwächen: Die Wünsche müssen zusammenpassen, viele Waren sind nicht teilbar und nicht haltbar.',so:'Bei n Waren gibt es n · (n − 1) ÷ 2 Tauschverhältnisse. Bei 100 Waren wären das schon 4.950 „Preise“!',bed:'Geld löst alle drei Probleme: Jeder nimmt es an, es ist teilbar, haltbar – und jede Ware hat nur noch einen Preis.',tipp:'Forscher streiten, ob es reine Tauschwirtschaften je gab. Vieles spricht dafür, dass Menschen früh mit Schulden und Gefälligkeiten rechneten (siehe Lektion „Schulden & Kerbhölzer“).'}},
+
+{id:'warengeld',a:'vor',t:'Warengeld: Muscheln, Salz & Vieh',steps:[
+ S('Die Lösung: Eine Ware, die alle gerne annehmen, wird zum Tauschmittel – das erste Geld.',[P('WARENGELD',200,30,'a')]),
+ S('Kaurimuscheln waren in Afrika, Indien und China über Jahrhunderte als Geld im Umlauf.',[E('🐚',65,100,40),T('Kauri',65,142,11,'mut',1)]),
+ S('Salz war kostbar, weil es Essen haltbar machte. Römische Soldaten bekamen oft Geld für Salz.',[E('🧂',155,100,40),T('Salz',155,142,11,'mut',1)]),
+ S('Vieh war Reichtum: Das lateinische Wort für Geld, „pecunia“, kommt von „pecus“ – Vieh.',[E('🐄',245,100,40),T('Vieh',245,142,11,'mut',1)]),
+ S('In Mesopotamien rechnete man mit Gerste. Gutes Geld muss haltbar, teilbar, tragbar, knapp und anerkannt sein.',[E('🌾',335,100,40),T('Gerste',335,142,11,'mut',1),P('HALTBAR · TEILBAR · TRAGBAR · KNAPP',200,192,'green')])
+],info:{was:'Warengeld ist eine Ware, die selbst einen Nutzen hat und gleichzeitig als Zahlungsmittel dient – etwa Muscheln, Salz, Vieh oder Getreide.',so:'Gutes Warengeld ist haltbar, teilbar, leicht zu transportieren, knapp und wird von allen anerkannt.',bed:'Vieh und Getreide hatten Nachteile (Tiere sterben, Getreide verdirbt). Deshalb setzten sich später Metalle durch.',tipp:'In Gefängnissen dienten früher oft Zigaretten als Warengeld – ein modernes Beispiel für dasselbe Prinzip.'}},
+
+{id:'schulden',a:'vor',t:'Schulden & Kerbhölzer',steps:[
+ S('Schon vor den Münzen gab es Schulden: In Mesopotamien notierten Tempel um 3000 v. Chr. Schulden auf Tontafeln.',[B(40,70,160,100,'gold','TONTAFEL'),E('🏛️',300,110,46),P('ca. 3000 v. Chr.',300,50,'a')]),
+ S('Darauf stand, wer wem wie viel Gerste oder Silber schuldet.',[T('Bauer → Tempel',120,115,12,'txt',1),T('30 Maß Gerste',120,140,13,'gold',1)]),
+ S('In Europa nutzte man Kerbhölzer: In einen Holzstab wurden Kerben für die Schuld geschnitten.',[KB(80,100,240,6),T('1 Kerbe = 1 Einheit Schuld',200,160,12,'mut',1)],1),
+ S('Dann wurde der Stab längs gespalten. Jeder bekam eine Hälfte – nur wenn beide zusammenpassten, war die Schuld bewiesen.',[P('GLÄUBIGER',200,45),KB(80,70,240,6,1,{f:[80,100]}),KB(80,130,240,6,2,{f:[80,112]}),P('SCHULDNER',200,175)],1),
+ S('Daher kommt die Redewendung „etwas auf dem Kerbholz haben“. In England nutzte der Staat Kerbhölzer bis 1826.',[P('„AUF DEM KERBHOLZ HABEN“',200,215,'gold')])
+],info:{was:'Eine Schuld ist ein Versprechen, später zu zahlen. Sie wurde früh aufgeschrieben – auf Tontafeln oder als Kerben im Holz.',so:'Das Kerbholz wurde gespalten: Gläubiger und Schuldner hatten je eine Hälfte. Fälschen war unmöglich, weil die Kerben genau passen mussten.',bed:'Geld ist im Kern eine Art Schuldschein: ein Versprechen, das andere annehmen. Kredit ist darum vielleicht so alt wie Geld selbst.',tipp:'Wer „etwas auf dem Kerbholz hat“, hat Schuld auf sich geladen – die Redewendung stammt genau von diesen Hölzern.'}},
+
+/* ---------- MÜNZEN ---------- */
+{id:'metall',a:'muenzen',t:'Metall als Geld',steps:[
+ S('Silber, Kupfer und Gold waren selten, haltbar und beliebig teilbar – ideal als Geld.',[C(90,100,28,'silver','Ag'),C(200,100,28,'bronze','Cu'),C(310,100,28,'gold','Au'),T('Silber',90,148,11,'mut',1),T('Kupfer',200,148,11,'mut',1),T('Gold',310,148,11,'mut',1)]),
+ S('Anfangs zahlte man mit Metallstücken nach Gewicht – zum Beispiel mit zerhacktem Silber, dem Hacksilber.',[P('NACH GEWICHT',200,30,'a'),E('⚖️',200,105,64)],1),
+ S('In Mesopotamien war der Schekel eine Gewichtseinheit: etwa 8 Gramm Silber.',[P('1 SCHEKEL ≈ 8 g SILBER',200,192,'gold')]),
+ S('Das Problem: Bei jedem Kauf musste man wiegen und prüfen, ob das Metall echt und rein war.',[E('🔍',320,95,34),T('echt? rein?',320,135,12,'red',1)])
+],info:{was:'Metallgeld bestand anfangs aus Barren, Ringen oder Stücken, deren Wert sich nach Gewicht und Reinheit richtete.',so:'Händler trugen Waagen mit sich. Bezahlt wurde mit abgewogenen Stücken Silber oder Kupfer.',bed:'Metall war haltbar und teilbar – aber das ständige Wiegen und Prüfen war mühsam. Das führte zur Erfindung der Münze.',tipp:'Viele Währungsnamen waren ursprünglich Gewichte: Das britische „Pfund“ stand für ein Pfund Silber.'}},
+
+{id:'lydien',a:'muenzen',t:'Die erste Münze: Lydien',steps:[
+ S('Um 600 v. Chr. prägte das Königreich Lydien in der heutigen Türkei die ersten Münzen der Welt.',[P('LYDIEN · um 600 v. Chr.',200,30,'a'),C(200,115,46,'gold','🦁')]),
+ S('Sie bestanden aus Elektron – einer natürlichen Mischung aus Gold und Silber.',[P('ELEKTRON = GOLD + SILBER',200,195,'gold')]),
+ S('Der Stempel mit dem Löwenkopf garantierte: Gewicht und Wert sind geprüft. Wiegen war nicht mehr nötig!',[A(300,78,248,100,'a'),P('STEMPEL = GARANTIE',320,62,'green')]),
+ S('König Krösus ließ später Münzen aus reinem Gold und reinem Silber prägen. „Reich wie Krösus“ sagt man bis heute.',[C(130,105,36,'gold','Au'),C(270,105,36,'silver','Ag'),P('„REICH WIE KRÖSUS“',200,190,'a')],1),
+ S('Fast zur gleichen Zeit zahlte man in China mit Bronzegeld in Form von Messern und Spaten – später mit runden Münzen mit viereckigem Loch.',[C(200,105,42,'bronze','',{hole:1}),P('CHINA · BRONZEMÜNZE MIT LOCH',200,190,'a')],1)
+],info:{was:'Eine Münze ist ein Metallstück mit festem Gewicht, das ein Herrscher oder Staat mit einem Stempel garantiert.',so:'Der aufgeprägte Stempel ersetzte das Wiegen: Jeder konnte sehen, wer die Münze herausgegeben hat und wie viel sie wert ist.',bed:'Mit Münzen wurde Handel viel schneller und einfacher. Sie verbreiteten sich rasch über Griechenland in die ganze Welt.',tipp:'Die chinesischen Lochmünzen konnte man auf eine Schnur fädeln – praktisch zum Zählen und Tragen großer Beträge.'}},
+
+{id:'rom',a:'muenzen',t:'Rom & der Denar',steps:[
+ S('Rom führte um 211 v. Chr. den Denar ein – eine Silbermünze, die im ganzen Reich galt.',[P('ROM · ab ca. 211 v. Chr.',200,30,'a'),C(200,108,46,'silver','')]),
+ S('Auf den Münzen war der Herrscher abgebildet – Werbung für die Macht, die jeder in der Tasche trug.',[E('👑',200,103,34),T('DENAR',200,170,13,'mut',1)]),
+ S('Geprägt wurde beim Tempel der Göttin Juno Moneta. Daraus entstanden die Wörter „Münze“ und „money“.',[P('JUNO MONETA → MÜNZE · MONEY',200,205,'gold')]),
+ S('Der Denar lebt weiter: im „Dinar“ vieler Länder und im „d“, dem alten Kürzel für den britischen Penny.',[T('DENAR',200,60,18,'a',1),A(200,75,110,135,'a'),A(200,75,290,135,'a'),P('DINAR',110,160,'gold'),P('PENNY (d)',290,160,'gold')],1)
+],info:{was:'Der Denar war die wichtigste Silbermünze des Römischen Reiches – über rund 450 Jahre im Umlauf.',so:'Vorne zeigte er meist den Kopf des Kaisers, hinten Götter, Siege oder Bauwerke – eine Art „Zeitung“ in Münzform.',bed:'Rom schuf eine Währung für ein riesiges Reich. Das erleichterte Handel von Britannien bis Ägypten.',tipp:'In Spanien heißt Geld noch heute „dinero“ – auch das kommt vom Denar.'}},
+
+{id:'verfall',a:'muenzen',t:'Münzverschlechterung',steps:[
+ S('Unter Kaiser Augustus bestand ein Denar fast ganz aus Silber.',[BAR(70,195,46,140,'blue','≈ 95 %','Augustus'),T('Silberanteil im Denar',200,22,12,'mut',1)]),
+ S('Die Kaiser brauchten Geld für Kriege und Soldaten. Also mischten sie immer mehr billiges Kupfer hinein.',[BAR(177,195,46,70,'gold','≈ 50 %','um 200 n. Chr.')]),
+ S('Um 260 n. Chr. war kaum noch Silber drin – unter 5 Prozent. Die Preise stiegen stark: Inflation!',[BAR(284,195,46,7,'red','< 5 %','um 260 n. Chr.'),P('INFLATION',300,70,'red')]),
+ S('Betrüger schnitten Metall vom Münzrand ab. Deshalb bekamen Münzen später einen geriffelten Rand – so wie viele Euro-Münzen heute.',[C(200,100,46,'gold','€',{rim:1}),P('GERIFFELTER RAND',200,185,'green')],1)
+],info:{was:'Münzverschlechterung bedeutet: Der Staat senkt heimlich den Edelmetallanteil, prägt aber weiter denselben Nennwert.',so:'Aus derselben Menge Silber entstehen mehr Münzen – kurzfristig hat der Staat mehr Geld, langfristig steigen die Preise.',bed:'Das „Greshamsche Gesetz“ sagt: Schlechtes Geld verdrängt gutes. Gute Münzen werden gehortet, die schlechten ausgegeben.',tipp:'Isaac Newton, der berühmte Physiker, leitete später die englische Münzstätte und kämpfte gegen Münzfälscher.'}},
+
+{id:'taler',a:'muenzen',t:'Gold, Silber & der Taler',steps:[
+ S('Im Mittelalter zahlte man in Europa vor allem mit dem silbernen Pfennig.',[C(75,110,24,'silver','Pf'),T('Pfennig',75,150,11,'mut',1)]),
+ S('Für große Zahlungen gab es Goldmünzen wie den Florin aus Florenz – in Deutschland „Gulden“ genannt.',[C(180,110,32,'gold','fl'),T('Gulden',180,158,11,'mut',1)]),
+ S('Ab 1520 wurden in Joachimsthal (Böhmen) große Silbermünzen geprägt: die Joachimsthaler – kurz Taler.',[C(305,110,42,'silver','TALER'),T('ab 1520',305,168,11,'mut',1)]),
+ S('Aus „Taler“ wurde im Englischen „Dollar“ – ein Name, der um die Welt ging!',[P('TALER → DOLLAR',200,210,'a')])
+],info:{was:'Der Taler war eine große Silbermünze der frühen Neuzeit und über Jahrhunderte eine der wichtigsten Münzen Europas.',so:'„Pf“ ist die alte Abkürzung für Pfennig, „fl“ steht für Florin bzw. Gulden.',bed:'Mit Silber aus Amerika (spanische Silberpesos) wurde Silbergeld im 16. Jahrhundert weltweit verbreitet.',tipp:'Das Wort „Dollar“ ist also eigentlich deutsch – es stammt vom „Taler“ aus Böhmen ab.'}},
+
+/* ---------- PAPIERGELD ---------- */
+{id:'china',a:'papier',t:'Papiergeld in China',steps:[
+ S('In China waren Münzen aus Eisen im Umlauf – für größere Einkäufe brauchte man kiloweise Metall.',[C(55,95,16,'bronze','',{hole:1}),C(90,95,16,'bronze','',{hole:1}),C(72,125,16,'bronze','',{hole:1}),C(107,125,16,'bronze','',{hole:1}),T('schwer!',82,165,13,'red',1)]),
+ S('Händler in Sichuan gaben deshalb Papierscheine aus, die für hinterlegte Münzen standen.',[A(135,110,200,110,'a'),N(210,72,150,78,'JIAOZI','gold')]),
+ S('Um 1024 übernahm der Staat der Song-Dynastie die Scheine – das erste staatliche Papiergeld der Welt.',[P('SONG-DYNASTIE · 1024',200,30,'a')]),
+ S('Marco Polo staunte im 13. Jahrhundert: Papier, das wie Gold angenommen wurde!',[T('Marco Polo: „Papier statt Gold!“',200,185,12,'mut',1)]),
+ S('Doch die Herrscher druckten später zu viele Scheine – das Geld verlor an Wert.',[P('ZU VIEL GEDRUCKT → WERTVERLUST',200,215,'red')])
+],info:{was:'Die Jiaozi aus der chinesischen Provinz Sichuan gelten als erstes Papiergeld. Ab 1024 gab sie der Staat aus.',so:'Anfangs stand jeder Schein für Münzen, die bei einem Händler hinterlegt waren – ein Versprechen auf Papier.',bed:'Papier ist leicht und günstig. Aber: Wer Geld einfach drucken kann, ist versucht, zu viel davon zu drucken.',tipp:'Europa brauchte noch über 600 Jahre, bis es selbst Banknoten einführte.'}},
+
+{id:'goldschmied',a:'papier',t:'Goldschmiede-Quittungen',steps:[
+ S('Im London des 17. Jahrhunderts lagerten Kaufleute ihr Gold sicher bei Goldschmieden.',[E('🧑‍💼',55,105,40),A(85,105,160,105,'gold'),B(170,65,90,80,'gold','TRESOR'),C(200,118,11,'gold'),C(226,118,11,'gold'),C(213,100,11,'gold')]),
+ S('Dafür bekamen sie eine Quittung: „Ich bewahre 100 Goldmünzen für den Inhaber auf.“',[A(262,105,285,105,'a'),N(290,78,100,54,'100 GOLD','gold')]),
+ S('Statt Gold herumzutragen, zahlten die Leute bald direkt mit den Quittungen.',[N(150,60,100,50,'100','gold',{f:[40,60]}),E('🧑‍💼',60,170,34),E('👷',340,170,34),A(95,170,305,170,'a'),T('zahlt mit Quittung',200,152,11,'mut',1)],1),
+ S('Die Goldschmiede merkten: Nie holen alle gleichzeitig ihr Gold ab. Also gaben sie mehr Quittungen aus, als Gold im Tresor lag.',[B(30,55,120,100,'gold','TRESOR: 100'),C(70,110,13,'gold'),C(100,110,13,'gold'),N(185,50,80,36,'100'),N(285,50,80,36,'100'),N(185,100,80,36,'100'),N(285,100,80,36,'100'),P('400 QUITTUNGEN · 100 GOLD',230,170,'red')],1),
+ S('So entstand das Teilreserve-System – die Grundlage heutiger Banken.',[P('TEILRESERVE',200,215,'a')])
+],info:{was:'Goldschmiede-Quittungen waren Bestätigungen über eingelagertes Gold – und wurden selbst zum Zahlungsmittel.',so:'Weil nie alle Kunden gleichzeitig ihr Gold abholten, konnten Goldschmiede zusätzliche Quittungen als Kredit ausgeben.',bed:'Teilreserve heißt: Nur ein Teil des Geldes ist wirklich als Reserve vorhanden. So arbeiten Banken bis heute.',tipp:'Wollen alle gleichzeitig ihr Geld zurück, droht ein „Bank Run“ – die Bank kann dann nicht alle auszahlen.'}},
+
+{id:'banken',a:'papier',t:'Die ersten Banken',steps:[
+ S('Im 14. und 15. Jahrhundert wechselten Geldwechsler in Italien Münzen auf einer Bank – italienisch „banco“.',[E('🧔',200,75,42),B(110,108,180,14,'gold'),C(160,100,8,'silver'),C(240,100,8,'gold'),T('„banco“ = Tisch, Bank',200,145,12,'mut',1)]),
+ S('Konnte ein Wechsler nicht zahlen, wurde seine Bank zerbrochen: „banca rotta“ – daher „bankrott“.',[X(200,114,22),P('BANCA ROTTA → BANKROTT',200,190,'red')]),
+ S('Familien wie die Medici in Florenz nutzten Wechselbriefe: in Florenz einzahlen, in Brügge abholen – ohne Münzen zu transportieren.',[T('Florenz',60,120,12,'txt',1),T('Brügge',340,120,12,'txt',1),A(95,112,305,112,'a',{dash:1}),N(160,55,80,40,'WECHSEL','gold',{f:[40,55]})],1),
+ S('Die doppelte Buchführung mit Soll und Haben machte Geschäfte überprüfbar – bis heute Standard in jeder Firma.',[B(95,150,210,58,'blue','SOLL | HABEN'),T('1494 beschrieben (Pacioli)',200,190,11,'mut',1)])
+],info:{was:'Die ersten modernen Banken entstanden in Italien. Sie wechselten Geld, nahmen Einlagen an und vergaben Kredite.',so:'Ein Wechselbrief war eine schriftliche Zahlungsanweisung. Er ersetzte gefährliche Geldtransporte über weite Strecken.',bed:'Banken machten Handel über Grenzen hinweg möglich – und reiche Bankiersfamilien wie die Medici wurden sehr mächtig.',tipp:'Die Wörter Bank, Konto, Saldo, Giro und bankrott kommen alle aus dem Italienischen.'}},
+
+{id:'banknoten',a:'papier',t:'Banknoten in Europa',steps:[
+ S('1661 gab die Stockholms Banco in Schweden die ersten Banknoten Europas aus.',[P('SCHWEDEN · STOCKHOLMS BANCO',200,28,'a'),N(140,58,120,64,'1661','blue')]),
+ S('Der Grund: Schwedisches Kupfergeld bestand aus Platten, die bis zu 20 Kilo wogen – Papier war viel leichter.',[T('Kupferplatte: bis zu 20 kg',200,160,12,'red',1),T('Banknote: wenige Gramm',200,185,12,'green',1)]),
+ S('1694 wurde die Bank of England gegründet. Ihre Banknoten wurden zum Vorbild für viele Länder.',[E('🏛️',200,95,52),P('BANK OF ENGLAND · 1694',200,165,'a')],1),
+ S('In Frankreich ließ John Law ab 1716 Unmengen Papiergeld drucken. 1720 platzte die Blase – viele verloren alles.',[LN([[30,205],[90,190],[150,150],[210,90],[255,55],[285,190],[370,208]],'red'),P('JOHN LAW · 1720',120,40,'red')],1)
+],info:{was:'Banknoten sind von einer Bank ausgegebene Scheine. Anfangs versprachen sie, jederzeit gegen Münzen oder Edelmetall eingetauscht zu werden.',so:'Eine Bank gab Scheine aus, die man überall als Zahlung annahm – solange man der Bank vertraute.',bed:'Papiergeld braucht Vertrauen. Das zeigte das Scheitern von John Law: Zu viel Papier ohne Deckung führte zum Absturz.',tipp:'Die Bank of England existiert bis heute und ist die Zentralbank Großbritanniens.'}},
+
+{id:'goldstandard',a:'papier',t:'Der Goldstandard',steps:[
+ S('Im 19. Jahrhundert banden viele Länder ihre Währung fest an Gold: den Goldstandard.',[P('GOLDSTANDARD',200,30,'gold')]),
+ S('Jede Banknote konnte bei der Bank gegen eine feste Menge Gold eingetauscht werden.',[N(40,78,110,60,'100 MARK','blue'),A(165,108,235,108,'gold',{bi:1}),C(270,108,20,'gold','Au'),C(315,108,20,'gold','Au')]),
+ S('Ab 1873 galt im Deutschen Reich die Mark: 2.790 Mark entsprachen 1 Kilogramm Feingold.',[P('2.790 MARK = 1 kg GOLD',200,175,'a')]),
+ S('Vorteil: Das Geld behielt seinen Wert. Nachteil: Es durfte nur so viel Geld geben, wie Gold vorhanden war.',[T('+ stabil',120,212,13,'green',1),T('− unflexibel',280,212,13,'red',1)]),
+ S('Im Ersten Weltkrieg 1914 wurde der Umtausch in Gold ausgesetzt – die Staaten brauchten Geld für den Krieg.',[X(292,108,26),P('1914: EINLÖSUNG GESTOPPT',200,60,'red')])
+],info:{was:'Beim Goldstandard ist jede Geldeinheit durch eine feste Menge Gold gedeckt und kann eingetauscht werden.',so:'1 Mark entsprach 1/2.790 kg Gold – also rund 0,36 Gramm. 100 Mark waren damit etwa 36 Gramm Gold.',bed:'Gold schützte vor Inflation, machte die Wirtschaft aber starr: In Krisen konnte kein zusätzliches Geld geschaffen werden.',tipp:'Großbritannien führte den Goldstandard schon Anfang des 19. Jahrhunderts ein, viele Länder folgten nach 1870.'}},
+
+/* ---------- MODERNES GELD ---------- */
+{id:'zentralbank',a:'modern',t:'Zentralbanken',steps:[
+ S('Eine Zentralbank ist die „Bank der Banken“. Sie gibt das Bargeld eines Landes aus.',[E('🏛️',200,62,44),P('ZENTRALBANK',200,108,'a')]),
+ S('Geschäftsbanken leihen sich bei ihr Geld – zum sogenannten Leitzins.',[E('🏦',70,195,32),E('🏦',200,195,32),E('🏦',330,195,32),A(185,122,80,172),A(200,122,200,172),A(215,122,320,172),T('Leitzins',268,150,11,'gold',1)]),
+ S('Ihr wichtigstes Ziel: stabile Preise. Die Europäische Zentralbank strebt rund 2 % Inflation an.',[P('ZIEL: 2 % INFLATION',200,20,'green')]),
+ S('Wichtige Daten: US-Notenbank Fed 1913, Deutsche Bundesbank 1957, Europäische Zentralbank (EZB) 1998 in Frankfurt.',[A(25,120,375,120,'mut'),P('FED 1913',80,90,'a'),P('BUNDESBANK 1957',200,150,'a'),P('EZB 1998',320,90,'a')],1)
+],info:{was:'Eine Zentralbank (auch Notenbank) steuert das Geld eines Landes oder Währungsraums – bei uns die EZB in Frankfurt.',so:'Mit dem Leitzins beeinflusst sie, wie teuer Kredite sind: hoher Zins bremst die Wirtschaft, niedriger Zins kurbelt sie an.',bed:'Steigen die Preise zu stark, erhöht die Zentralbank die Zinsen. Droht eine Krise, senkt sie sie.',tipp:'Die Deutsche Bundesbank gibt es weiter – sie ist heute Teil des Eurosystems und bringt Euro-Bargeld in Umlauf.'}},
+
+{id:'bretton',a:'modern',t:'Bretton Woods & 1971',steps:[
+ S('1944 legten die Staaten im Ort Bretton Woods (USA) eine neue Weltwährungsordnung fest.',[P('BRETTON WOODS · 1944',200,28,'a')]),
+ S('Der US-Dollar wurde an Gold gebunden: 35 Dollar für eine Feinunze Gold (31,1 Gramm).',[T('35 $',115,98,24,'txt',1),A(155,95,228,95,'gold',{bi:1}),C(270,95,28,'gold','1 oz')]),
+ S('Andere Währungen wie die D-Mark hatten einen festen Wechselkurs zum Dollar.',[N(40,150,80,36,'DM','blue'),N(160,150,80,36,'£','blue'),N(280,150,80,36,'¥','blue'),T('feste Kurse zum Dollar',200,212,11,'mut',1)]),
+ S('Am 15. August 1971 beendete US-Präsident Nixon den Umtausch von Dollar in Gold.',[C(200,95,32,'gold','Au'),X(200,95,30),P('15.08.1971',200,150,'red')],1),
+ S('Seitdem ist unser Geld „Fiatgeld“: nicht mehr durch Gold gedeckt, sondern durch Vertrauen und Gesetz.',[P('FIATGELD = VERTRAUEN',200,200,'a')])
+],info:{was:'Bretton Woods war ein System fester Wechselkurse mit dem goldgedeckten US-Dollar im Mittelpunkt (1944–1973).',so:'Fiatgeld kommt vom lateinischen „fiat“ – „es werde“. Es hat Wert, weil der Staat es zum Zahlungsmittel erklärt und Menschen ihm vertrauen.',bed:'Seit 1971 ist keine große Währung mehr an Gold gebunden. Zentralbanken können die Geldmenge flexibel steuern.',tipp:'1973 endeten auch die festen Wechselkurse – seitdem schwanken Kurse wie Euro/Dollar täglich.'}},
+
+{id:'giral',a:'modern',t:'Wie Banken Geld schaffen',steps:[
+ S('Heute besteht der größte Teil des Geldes nicht aus Scheinen, sondern aus Zahlen auf Konten: Giralgeld.',[BAR(110,200,64,145,'a','≈ 90 %','Giralgeld'),BAR(226,200,64,16,'gold','≈ 10 %','Bargeld')]),
+ S('Familie Meier nimmt bei ihrer Bank einen Kredit über 100.000 € auf.',[E('👨‍👩‍👧',60,90,40),E('🏦',335,90,40),T('Kredit 100.000 €',200,62,13,'gold',1),A(295,82,105,82,'gold')],1),
+ S('Die Bank schreibt den Betrag einfach auf ihrem Konto gut – das Geld entsteht in diesem Moment neu.',[B(125,118,150,54,'green','KONTO MEIER'),T('+ 100.000 €',200,155,15,'green',1)]),
+ S('Zahlt Familie Meier den Kredit zurück, verschwindet das Geld wieder.',[P('TILGUNG → GELD VERSCHWINDET',200,205,'red')]),
+ S('Grenzen setzen die Zentralbank mit Leitzins und Regeln – und die Frage, ob der Kredit zurückgezahlt werden kann.',[P('GRENZE: LEITZINS & REGELN',200,24,'a')])
+],info:{was:'Giralgeld (Buchgeld) ist Geld auf Girokonten. Man kann es nicht anfassen – aber damit überweisen und mit Karte zahlen.',so:'Vergibt eine Bank einen Kredit, entsteht neues Giralgeld auf dem Konto des Kunden. Mit der Rückzahlung wird es wieder vernichtet.',bed:'Nicht nur die Zentralbank, sondern vor allem die Geschäftsbanken schaffen den Großteil des Geldes – durch Kredite.',tipp:'Banken müssen bei der Zentralbank eine kleine Mindestreserve halten (im Euroraum 1 %) und Eigenkapital-Regeln einhalten.'}},
+
+{id:'inflation',a:'modern',t:'Inflation & Hyperinflation',steps:[
+ S('Inflation heißt: Die Preise steigen, das Geld verliert an Kaufkraft.',[LN([[40,195],[120,175],[200,145],[280,105],[360,55]],'red'),P('PREISE ↑',90,40,'red')]),
+ S('Bei 2 % Inflation halbiert sich die Kaufkraft in etwa 35 Jahren. Faustregel: 72 ÷ 2 = 36.',[P('72 ÷ INFLATION = JAHRE',260,200,'gold')]),
+ S('Deutschland 1923: Hyperinflation! Im November kostete 1 US-Dollar 4,2 Billionen Mark.',[N(120,45,160,70,'MILLIARDEN MARK','red'),T('1 $ = 4.200.000.000.000 Mark',200,150,13,'red',1)],1),
+ S('Der Staat druckte Geld, um Schulden und Kriegsfolgen zu bezahlen. Erst die Rentenmark beendete das Chaos: 1 Rentenmark = 1 Billion Papiermark.',[P('RENTENMARK · NOV. 1923',200,200,'green')])
+],info:{was:'Inflation ist ein anhaltender Anstieg des Preisniveaus. Bei Hyperinflation steigen die Preise extrem schnell – teils mehrmals am Tag.',so:'Faustregel: 72 geteilt durch die Inflationsrate ergibt grob, nach wie vielen Jahren sich die Kaufkraft halbiert.',bed:'Leichte Inflation gilt als normal. Zu viel Geld im Verhältnis zu den Waren führt aber zu Geldentwertung.',tipp:'1923 tapezierten manche Menschen mit Geldscheinen – das Papier war mehr wert als der aufgedruckte Betrag.'}},
+
+{id:'euro',a:'modern',t:'Von der D-Mark zum Euro',steps:[
+ S('Am 20. Juni 1948 kam in Westdeutschland die D-Mark – sie wurde zum Symbol für Stabilität.',[N(130,45,140,70,'DM','blue'),P('20.06.1948',200,145,'a')]),
+ S('1999 wurde der Euro als Buchgeld eingeführt, am 1. Januar 2002 kamen die Scheine und Münzen.',[N(40,50,120,64,'DM','blue'),A(170,82,228,82,'a'),N(240,50,120,64,'€','gold'),P('1.1.2002',300,140,'a')],1),
+ S('Der feste Umrechnungskurs: 1 Euro = 1,95583 D-Mark.',[T('1 € = 1,95583 DM',200,182,18,'txt',1)]),
+ S('Heute zahlen über 350 Millionen Menschen in 21 Ländern mit dem Euro – die EZB in Frankfurt wacht über ihn.',[P('21 LÄNDER · ÜBER 350 MIO. MENSCHEN',200,218,'green')])
+],info:{was:'Der Euro ist die gemeinsame Währung vieler EU-Länder. Seit 2026 gehört auch Bulgarien dazu – damit sind es 21 Länder.',so:'Zum Umrechnen alter DM-Preise teilst du durch 1,95583 – grob also durch 2.',bed:'Eine gemeinsame Währung erleichtert Reisen und Handel – ohne Umtauschen und Wechselkursrisiko.',tipp:'D-Mark-Scheine und -Münzen kann man bei der Deutschen Bundesbank weiterhin unbefristet in Euro umtauschen.'}},
+
+/* ---------- DIGITALES GELD ---------- */
+{id:'karte',a:'digital',t:'Karte & Überweisung',steps:[
+ S('1950 entstand mit dem Diners Club die erste Kreditkarte – zunächst nur für Restaurants.',[B(130,55,140,84,'blue','DINERS CLUB'),T('•••• 1950',200,118,13,'txt',1),P('ERSTE KREDITKARTE',200,175,'a')]),
+ S('1967 stand in London der erste Geldautomat, 1968 der erste in Deutschland (Tübingen).',[E('🏧',200,95,56),P('1967 LONDON · 1968 TÜBINGEN',200,170,'a')],1),
+ S('Mit der Überweisung wandert Geld von Konto zu Konto – ohne dass ein einziger Schein bewegt wird.',[B(25,80,120,64,'blue','KONTO A'),B(255,80,120,64,'blue','KONTO B'),A(150,112,250,112,'a'),T('− 50 €',85,125,14,'red',1),T('+ 50 €',315,125,14,'green',1)],1),
+ S('Seit 2014 gilt im Euroraum SEPA: Überweisungen funktionieren in allen Ländern gleich – mit der IBAN.',[P('SEPA · IBAN',200,190,'gold')])
+],info:{was:'Karten und Überweisungen bewegen Giralgeld – also Zahlen auf Konten – statt Bargeld.',so:'Bei der Debitkarte (z. B. Girocard) wird sofort vom Konto abgebucht, bei der Kreditkarte meist später gesammelt.',bed:'Bargeldloses Zahlen ist schnell und bequem – macht Ausgaben aber auch weniger „spürbar“.',tipp:'Die IBAN beginnt mit dem Ländercode – in Deutschland mit „DE“ und hat 22 Stellen.'}},
+
+{id:'handy',a:'digital',t:'Online-Banking & Handy',steps:[
+ S('Mit dem Online-Banking erledigt man Bankgeschäfte am Computer – ab Ende der 1990er-Jahre wurde es alltäglich.',[E('💻',200,100,60),P('ONLINE-BANKING',200,175,'a')]),
+ S('Kontaktlos zahlen per Karte oder Handy funktioniert über NFC – Funk auf wenige Zentimeter.',[E('📱',100,100,50),T(')))',165,100,18,'a',1),B(215,68,110,66,'green','KASSE'),T('✓ bezahlt',270,112,12,'green',1),P('KONTAKTLOS · NFC',200,180,'a')],1),
+ S('Seit 2025 müssen Banken in der EU Echtzeitüberweisungen anbieten: Das Geld ist in höchstens 10 Sekunden da.',[T('⚡ 10 Sekunden',200,95,24,'gold',1),P('ECHTZEIT-ÜBERWEISUNG',200,150,'a')],1),
+ S('Bargeld wird seltener genutzt – ist in Deutschland aber weiterhin beliebt und gesetzliches Zahlungsmittel.',[T('Bargeld bleibt gesetzliches Zahlungsmittel',200,205,12,'mut',1)])
+],info:{was:'Digitales Bezahlen umfasst Online-Banking, kontaktlose Karten, Handy-Wallets und Echtzeitüberweisungen.',so:'Beim Handy-Bezahlen wird statt der echten Kartennummer eine Ersatznummer (Token) übertragen – das erhöht die Sicherheit.',bed:'Zahlungen werden immer schneller. Trotzdem bleibt das Geld dahinter dasselbe: Giralgeld auf Bankkonten.',tipp:'Gib deine Zugangsdaten nie per Telefon, SMS oder E-Mail weiter – echte Banken fragen nie danach.'}},
+
+{id:'bitcoin',a:'digital',t:'Bitcoin',steps:[
+ S('2008 veröffentlichte eine unbekannte Person namens Satoshi Nakamoto die Idee von Bitcoin. Am 3. Januar 2009 startete das Netzwerk.',[C(200,88,40,'gold','₿'),P('SATOSHI NAKAMOTO · 2009',200,160,'a')]),
+ S('Bitcoin braucht keine Bank: Tausende Computer prüfen gemeinsam jede Zahlung und speichern sie in der Blockchain.',[B(25,90,90,52,'gold','BLOCK 1'),B(155,90,90,52,'gold','BLOCK 2'),B(285,90,90,52,'gold','BLOCK 3'),A(117,116,153,116,'a'),A(247,116,283,116,'a'),P('BLOCKCHAIN',200,50,'a')],1),
+ S('Es wird nie mehr als 21 Millionen Bitcoin geben. Etwa alle vier Jahre halbiert sich die Menge neuer Bitcoin (Halving).',[P('MAX. 21 MIO. ₿ · HALVING',200,195,'gold')]),
+ S('Am 22. Mai 2010 kaufte jemand zwei Pizzen für 10.000 Bitcoin. Fans feiern seitdem den „Bitcoin Pizza Day“.',[E('🍕',110,100,46),E('🍕',185,100,46),T('= 10.000 ₿',300,100,17,'gold',1),P('22.05.2010',200,170,'a')],1)
+],info:{was:'Bitcoin ist eine digitale Währung ohne Zentralbank. Zahlungen werden in einer öffentlichen Kette von Datenblöcken gespeichert.',so:'Sogenannte Miner sammeln Zahlungen in Blöcken und hängen sie an die Kette – dafür bekommen sie neue Bitcoin.',bed:'Die Menge ist begrenzt, der Kurs schwankt aber stark. Viele sehen Bitcoin eher als Wertanlage denn als Alltagsgeld.',tipp:'Wer Bitcoin besitzt, hat eigentlich einen geheimen Schlüssel. Geht er verloren, sind die Bitcoin für immer weg.'}},
+
+{id:'digitaleuro',a:'digital',t:'Der digitale Euro',steps:[
+ S('Die EZB arbeitet am digitalen Euro: Bargeld in digitaler Form, direkt von der Zentralbank.',[P('DIGITALER EURO',200,28,'a'),C(200,95,40,'blue','€')]),
+ S('Er soll in einer digitalen Geldbörse am Handy liegen und im ganzen Euroraum funktionieren – auch offline.',[E('📱',80,175,38),A(115,175,275,175,'a'),E('🛒',315,175,36)]),
+ S('Anders als Bitcoin hat er immer einen festen Wert: 1 digitaler Euro = 1 Euro.',[T('1 digitaler Euro = 1 Euro',200,95,17,'txt',1),T('fester Wert, keine Kursschwankung',200,125,12,'green',1)],1),
+ S('Ob und wann er kommt, entscheidet die EU per Gesetz. Die EZB rechnet frühestens mit dem Ende des Jahrzehnts.',[P('GEPLANT · FRÜHESTENS ca. 2029',200,180,'gold')])
+],info:{was:'Der digitale Euro wäre digitales Zentralbankgeld – also eine Ergänzung zum Bargeld, nicht ein Ersatz.',so:'Er würde in einer App oder auf einer Karte gespeichert und könnte von Handy zu Handy übertragen werden.',bed:'Europa will damit unabhängiger von außereuropäischen Zahlungsanbietern werden.',tipp:'Geplant ist eine Obergrenze pro Person, damit nicht zu viel Geld von den Bankkonten abfließt. Der genaue Betrag ist noch offen.'}},
+
+{id:'zukunft',a:'digital',t:'Die Zukunft des Geldes',steps:[
+ S('Geld hat sich immer verändert – vom Vieh über Münzen und Papier bis zu Zahlen auf dem Bildschirm.',[E('🐄',40,95,30),C(120,95,18,'gold'),E('📜',200,95,30),E('💳',280,95,30),C(360,95,18,'gold','₿'),A(20,132,385,132,'mut'),T('Vieh',40,152,10,'mut',1),T('Münze',120,152,10,'mut',1),T('Papier',200,152,10,'mut',1),T('Karte',280,152,10,'mut',1),T('Digital',360,152,10,'mut',1)]),
+ S('Neue Formen wie Stablecoins (Kryptogeld mit festem Kurs) und digitales Zentralbankgeld kommen hinzu.',[P('STABLECOINS · DIGITALES ZENTRALBANKGELD',200,195,'a')]),
+ S('Eines bleibt immer gleich: Geld funktioniert nur, weil Menschen ihm vertrauen.',[E('🤝',200,90,54),P('GELD = VERTRAUEN',200,160,'gold')],1),
+ S('Die drei Aufgaben des Geldes: Tauschmittel, Wertmaß und Wertspeicher – ob Muschel oder Bitcoin.',[P('TAUSCHMITTEL',75,212,'green'),P('WERTMASS',200,212,'blue'),P('WERTSPEICHER',325,212,'gold')])
+],info:{was:'Geld ist alles, was allgemein als Tauschmittel angenommen wird, Preise vergleichbar macht und Wert aufbewahrt.',so:'Prüfe jede Geldform mit drei Fragen: Kann ich damit bezahlen? Kann ich damit Preise messen? Behält es seinen Wert?',bed:'Die Form des Geldes ändert sich ständig. Die Aufgaben und das Vertrauen dahinter bleiben gleich.',tipp:'Starte jetzt das Quiz und teste, was du über die Geschichte des Geldes gelernt hast!'}}
+];
+L.forEach((l,i)=>{l.i=i;});
+const byId=Object.fromEntries(L.map(l=>[l.id,l]));
+const areaOf=id=>AREAS.find(a=>a.id===id);
+const lessonsOf=aid=>L.filter(l=>l.a===aid);
+
+/* ============ Farben ============ */
+function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+let PAL={};
+function readPal(){PAL={txt:cssv('--tx'),mut:cssv('--mut'),gold:cssv('--gold'),green:cssv('--green'),red:cssv('--red'),blue:cssv('--blue'),cv:cssv('--cv'),grid:cssv('--grid'),card:cssv('--card'),line:cssv('--line')};}
+function rgba(hex,a){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const n=parseInt(hex,16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;}
+const METAL={gold:['#f3cd5a','#b4851a','#7a5a0e'],silver:['#dde3ea','#8b96a3','#59626d'],bronze:['#d48a4a','#8e5424','#5e3615']};
+const EMOJI='"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","Twemoji Mozilla",sans-serif';
+const MONO=getComputedStyle(document.documentElement).getPropertyValue('--mono')||'monospace';
+
+/* ============ Zeichnen ============ */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ease=q=>q<.5?2*q*q:1-Math.pow(-2*q+2,2)/2;
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function colr(k,ac){return k==='a'?ac:(PAL[k]||k);}
+function arrowHead(c,x1,y1,x2,y2,s){const an=Math.atan2(y2-y1,x2-x1);c.beginPath();c.moveTo(x2,y2);c.lineTo(x2-s*Math.cos(an-.45),y2-s*Math.sin(an-.45));c.lineTo(x2-s*Math.cos(an+.45),y2-s*Math.sin(an+.45));c.closePath();c.fill();}
+
+function drawItem(c,it,q,ac){
+ if(q<=0)return;
+ const col=colr(it.c||'a',ac);
+ let ox=0,oy=0;
+ if(it.f){ox=(it.f[0]-it.x)*(1-q);oy=(it.f[1]-it.y)*(1-q);}
+ c.save();
+ c.globalAlpha=it.f?Math.min(1,q*3):q;
+ c.translate(ox,oy);
+ switch(it.t){
+ case 'emo':{const s=it.f?1:(.55+.45*q);c.translate(it.x,it.y);c.scale(s,s);c.font=`${it.s}px ${EMOJI}`;c.textAlign='center';c.textBaseline='middle';c.fillStyle=PAL.txt;c.fillText(it.ch,0,it.s*.06);break;}
+ case 'pill':{c.font=`700 10px ${MONO}`;const w=c.measureText(it.tx).width+18,h=19;c.translate(it.x,it.y);const s=.8+.2*q;c.scale(s,s);rr(c,-w/2,-h/2,w,h,9.5);c.fillStyle=rgba(col,.16);c.fill();c.lineWidth=1.2;c.strokeStyle=col;c.stroke();c.fillStyle=col;c.textAlign='center';c.textBaseline='middle';c.fillText(it.tx,0,.5);break;}
+ case 'arr':{const x2=it.x1+(it.x2-it.x1)*q,y2=it.y1+(it.y2-it.y1)*q;c.strokeStyle=col;c.fillStyle=col;c.lineWidth=2;c.lineCap='round';if(it.dash)c.setLineDash([5,5]);c.beginPath();c.moveTo(it.x1,it.y1);c.lineTo(x2,y2);c.stroke();c.setLineDash([]);if(q>.85){arrowHead(c,it.x1,it.y1,x2,y2,8);if(it.bi)arrowHead(c,it.x2,it.y2,it.x1,it.y1,8);}break;}
+ case 'txt':{c.font=`${it.b?700:500} ${it.s}px ${it.b?MONO:'system-ui,sans-serif'}`;c.fillStyle=col;c.textAlign=it.al||'center';c.textBaseline='middle';c.fillText(it.tx,it.x,it.y+(1-q)*6);break;}
+ case 'coin':{const m=METAL[it.m]||METAL.gold,r=it.r*(it.f?1:(.6+.4*q));c.translate(it.x,it.y);
+  const g=c.createRadialGradient(-r*.35,-r*.35,r*.1,0,0,r);g.addColorStop(0,m[0]);g.addColorStop(1,m[1]);
+  c.beginPath();c.arc(0,0,r,0,7);c.fillStyle=g;c.fill();c.lineWidth=Math.max(1.5,r*.08);c.strokeStyle=m[2];c.stroke();
+  if(it.rim){c.strokeStyle=m[2];c.lineWidth=1.2;for(let k=0;k<48;k++){const a=k/48*6.283;c.beginPath();c.moveTo(Math.cos(a)*r*.9,Math.sin(a)*r*.9);c.lineTo(Math.cos(a)*r,Math.sin(a)*r);c.stroke();}}
+  c.beginPath();c.arc(0,0,r*.78,0,7);c.strokeStyle=rgba('#000000',.25);c.lineWidth=1;c.stroke();
+  if(it.hole){const h=r*.32;c.fillStyle=PAL.cv;c.fillRect(-h/2,-h/2,h,h);c.strokeStyle=m[2];c.strokeRect(-h/2,-h/2,h,h);}
+  if(it.tx){const fs=it.tx.length>3?r*.36:r*.62;c.font=`800 ${fs}px ${MONO},${EMOJI}`;c.textAlign='center';c.textBaseline='middle';c.fillStyle=m[2];c.fillText(it.tx,0,fs*.05);}
+  break;}
+ case 'note':{const s=it.f?1:(.85+.15*q);c.translate(it.x+it.w/2,it.y+it.h/2);c.scale(s,s);const w=it.w,h=it.h;
+  rr(c,-w/2,-h/2,w,h,6);c.fillStyle=rgba(col,.2);c.fill();c.lineWidth=1.5;c.strokeStyle=col;c.stroke();
+  rr(c,-w/2+5,-h/2+5,w-10,h-10,4);c.setLineDash([3,3]);c.lineWidth=.8;c.stroke();c.setLineDash([]);
+  c.beginPath();c.arc(-w/2+h*.32,0,h*.16,0,7);c.strokeStyle=rgba(col,.7);c.stroke();
+  const avail=w-h*.75-8;let fs=h*.34;c.font=`800 ${fs}px ${MONO}`;const mw=c.measureText(it.tx).width;if(mw>avail){fs*=avail/mw;c.font=`800 ${fs}px ${MONO}`;}c.fillStyle=col;c.textAlign='center';c.textBaseline='middle';c.fillText(it.tx,h*.2,1);break;}
+ case 'box':{rr(c,it.x,it.y,it.w,it.h,8);c.fillStyle=rgba(col,.1);c.fill();c.lineWidth=1.4;c.strokeStyle=col;c.stroke();if(it.tx){c.font=`700 9.5px ${MONO}`;c.fillStyle=col;c.textAlign='center';c.textBaseline='top';c.fillText(it.tx,it.x+it.w/2,it.y+6);}break;}
+ case 'bar':{const h=it.h*q;rr(c,it.x,it.y-h,it.w,Math.max(h,1),4);c.fillStyle=rgba(col,.75);c.fill();c.strokeStyle=col;c.lineWidth=1.2;c.stroke();
+  c.textAlign='center';c.textBaseline='bottom';c.font=`800 12px ${MONO}`;c.fillStyle=col;if(q>.5)c.fillText(it.top,it.x+it.w/2,it.y-h-5);
+  c.textBaseline='top';c.font=`600 10px ${MONO}`;c.fillStyle=PAL.mut;c.fillText(it.bot,it.x+it.w/2,it.y+5);
+  c.strokeStyle=PAL.mut;c.globalAlpha*=.5;c.beginPath();c.moveTo(it.x-12,it.y);c.lineTo(it.x+it.w+12,it.y);c.stroke();break;}
+ case 'x':{const s=it.s*q;c.strokeStyle=PAL.red;c.lineWidth=4;c.lineCap='round';c.beginPath();c.moveTo(it.x-s,it.y-s);c.lineTo(it.x+s,it.y+s);c.moveTo(it.x+s,it.y-s);c.lineTo(it.x-s,it.y+s);c.stroke();break;}
+ case 'chk':{const s=it.s;c.translate(it.x,it.y);c.beginPath();c.arc(0,0,s,0,7);c.fillStyle=rgba(PAL.green,.18);c.fill();c.strokeStyle=PAL.green;c.lineWidth=2;c.stroke();c.lineWidth=3.5;c.lineCap='round';c.beginPath();c.moveTo(-s*.45,0);c.lineTo(-s*.1,s*.38);c.lineTo(s*.5,-s*.38);c.stroke();break;}
+ case 'line':{const pts=it.pts,n=pts.length-1,tot=q*n;c.strokeStyle=col;c.lineWidth=2.6;c.lineJoin='round';c.lineCap='round';c.beginPath();c.moveTo(pts[0][0],pts[0][1]);
+  for(let k=1;k<=n;k++){if(tot>=k)c.lineTo(pts[k][0],pts[k][1]);else{const f=tot-(k-1);if(f>0)c.lineTo(pts[k-1][0]+(pts[k][0]-pts[k-1][0])*f,pts[k-1][1]+(pts[k][1]-pts[k-1][1])*f);break;}}c.stroke();break;}
+ case 'kerb':{const h=it.half?13:26;rr(c,it.x,it.y,it.w,h,4);c.fillStyle='#b98b4e';c.fill();c.strokeStyle='#6e4f25';c.lineWidth=1.4;c.stroke();
+  c.strokeStyle='#4a3216';c.lineWidth=2.2;for(let k=0;k<it.n;k++){const xx=it.x+30+k*(it.w-60)/(it.n-1);c.beginPath();c.moveTo(xx,it.y+(it.half===2?0:2));c.lineTo(xx,it.y+h-(it.half===1?0:2));c.stroke();}break;}
+ }
+ c.restore();
+}
+function sceneAt(les,si,p){
+ let start=0;for(let j=si;j>=0;j--){if(les.steps[j].clear){start=j;break;}}
+ const out=[];
+ for(let j=start;j<=si;j++){const add=les.steps[j].add,n=add.length;
+  add.forEach((it,i)=>{let q=1;if(j===si){const st=n>1?i/n*.55:0;q=clamp((p-st)/.3,0,1);}out.push([it,ease(q)]);});}
+ return out;
+}
+function paint(cv,les,si,p){
+ const dpr=Math.min(3,window.devicePixelRatio||1),w=cv.clientWidth||400,h=w*240/400;
+ if(cv.width!==Math.round(w*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+ const c=cv.getContext('2d'),k=cv.width/400;
+ c.setTransform(1,0,0,1,0,0);c.fillStyle=PAL.cv;c.fillRect(0,0,cv.width,cv.height);
+ c.setTransform(k,0,0,k,0,0);
+ c.strokeStyle=PAL.grid;c.lineWidth=1;c.beginPath();for(let x=20;x<400;x+=20){c.moveTo(x,0);c.lineTo(x,240);}for(let y=20;y<240;y+=20){c.moveTo(0,y);c.lineTo(400,y);}c.stroke();
+ const ac=areaOf(les.a).col;
+ for(const [it,q] of sceneAt(les,si,p))drawItem(c,it,q,ac);
+}
+
+/* ============ Thema ============ */
+const TKEY='geldschule-theme';
+let mode='dark';try{mode=localStorage.getItem(TKEY)||'dark';}catch(e){}
+const mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
+function applyTheme(){
+ const act=mode==='auto'?(mq&&mq.matches?'dark':'light'):mode;
+ document.documentElement.dataset.theme=act;
+ document.querySelector('meta[name=theme-color]').content=act==='dark'?'#070b10':'#eef2f6';
+ document.querySelectorAll('#theme button').forEach(b=>b.classList.toggle('on',b.dataset.m===mode));
+ readPal();redraw();
+}
+document.getElementById('theme').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;mode=b.dataset.m;try{localStorage.setItem(TKEY,mode);}catch(_){}applyTheme();});
+if(mq&&mq.addEventListener)mq.addEventListener('change',()=>{if(mode==='auto')applyTheme();});
+let redrawHooks=[];function redraw(){redrawHooks.forEach(f=>f());}
+window.addEventListener('resize',redraw);
+
+/* ============ Player ============ */
+const STEP=4200;
+let PL=null,raf=0;
+function stopPlayer(){if(raf)cancelAnimationFrame(raf);raf=0;PL=null;}
+function setupPlayer(les){
+ const cv=document.getElementById('cv'),n=les.steps.length,total=n*STEP;
+ PL={les,t:0,playing:true,speed:1,last:0};
+ const $=id=>document.getElementById(id);
+ const ui=()=>{
+  if(!PL)return;
+  const si=Math.min(n-1,Math.floor(PL.t/STEP)),p=PL.t>=total?1:clamp((PL.t-si*STEP)/STEP,0,1);
+  paint(cv,les,si,p);
+  $('sn').textContent=`SCHRITT ${si+1} / ${n}`;$('say').textContent=les.steps[si].say;
+  $('rg').value=Math.round(PL.t/total*1000);
+  const sec=x=>{x=Math.floor(x/1000);return Math.floor(x/60)+':'+String(x%60).padStart(2,'0');};
+  $('tm').textContent=sec(PL.t)+' / '+sec(total);
+  $('pb').textContent=PL.playing?'❚❚':(PL.t>=total?'↻':'▶');
+  document.querySelectorAll('#steps .sbtn').forEach((b,i)=>b.classList.toggle('on',i===si));
+  if(si===n-1&&p>.6&&!ST.seen[les.id]){ST.seen[les.id]=1;save();renderSide();}
+ };
+ const loop=ts=>{if(!PL)return;if(!PL.last)PL.last=ts;const dt=Math.min(100,ts-PL.last);PL.last=ts;
+  if(PL.playing){PL.t+=dt*PL.speed;if(PL.t>=total){PL.t=total;PL.playing=false;}}
+  ui();raf=PL.playing?requestAnimationFrame(loop):0;};
+ const play=()=>{if(!PL)return;if(PL.t>=total)PL.t=0;PL.playing=true;PL.last=0;if(!raf)raf=requestAnimationFrame(loop);};
+ const pause=()=>{PL.playing=false;ui();};
+ $('pb').onclick=()=>PL.playing?pause():play();
+ cv.onclick=()=>PL.playing?pause():play();
+ $('rs').onclick=()=>{PL.t=0;play();};
+ $('rg').oninput=e=>{PL.t=e.target.value/1000*total;if(!PL.playing)ui();};
+ document.querySelectorAll('#spd .sbtn').forEach(b=>b.onclick=()=>{PL.speed=+b.dataset.s;document.querySelectorAll('#spd .sbtn').forEach(x=>x.classList.toggle('on',x===b));});
+ document.querySelectorAll('#steps .sbtn').forEach((b,i)=>b.onclick=()=>{PL.t=i*STEP;play();});
+ redrawHooks=[ui];
+ raf=requestAnimationFrame(loop);
+}
+
+/* ============ Seitenleiste ============ */
+let q='';
+function renderSide(){
+ const el=document.getElementById('side');if(!el)return;
+ const cur=(location.hash.match(/#l-([\w-]+)/)||[])[1];
+ const ql=q.toLowerCase();
+ let h=`<input class="search" id="srch" placeholder="🔍 Lektion suchen …" value="${q.replace(/"/g,'&quot;')}">`;
+ for(const a of AREAS){
+  const ls=lessonsOf(a.id).filter(l=>!ql||(l.t+' '+l.steps.map(s=>s.say).join(' ')+' '+Object.values(l.info).join(' ')).toLowerCase().includes(ql));
+  if(!ls.length)continue;
+  h+=`<div class="sgrp" style="--ac:${a.col}"><h4>${a.icon} ${a.name.toUpperCase()}</h4>`+ls.map(l=>`<a href="#l-${l.id}" class="${l.id===cur?'act':''}">${l.t}${ST.seen[l.id]?'<span class="ck">✓</span>':''}</a>`).join('')+`</div>`;
+ }
+ h+=`<a class="sq" href="#quiz" style="color:${QUIZCOL};border-color:${QUIZCOL}">🎯 QUIZ STARTEN · BESTWERT ${ST.best}/10</a>`;
+ const had=document.activeElement&&document.activeElement.id==='srch',pos=had?document.activeElement.selectionStart:0;
+ el.innerHTML=h;
+ const s=document.getElementById('srch');s.oninput=e=>{q=e.target.value;renderSide();};
+ if(had){s.focus();s.setSelectionRange(pos,pos);}
+}
+
+/* ============ Ansichten ============ */
+const M=document.getElementById('main');
+function vHome(){
+ const seen=L.filter(l=>ST.seen[l.id]).length;
+ let h=`<section class="hero"><div class="kicker">BAYAZIT · LERN-APP · ${L.length} LEKTIONEN</div><h1>Wie entstand <span>Geld?</span></h1><p>Von der Kaurimuschel über Münzen und Papiergeld bis zum Bitcoin – in kleinen Videos erklärt.</p>
+ <div class="chips"><span class="chip">FORTSCHRITT <b>${seen}/${L.length}</b></span><span class="chip">QUIZ-BESTWERT <b>${ST.best}/10</b></span><span class="chip">ZEITRAUM <b>10.000 v. Chr. – heute</b></span></div></section><div class="bento">`;
+ AREAS.forEach((a,i)=>{const ls=lessonsOf(a.id),d=ls.filter(l=>ST.seen[l.id]).length;
+  h+=`<a class="tile" href="#b-${a.id}" style="--ac:${a.col}"><div class="ti-top"><span class="ti-ico">${a.icon}</span><span class="ti-num">0${i+1}</span></div><h2>${a.name.toUpperCase()}</h2><p>${a.desc}</p><div class="prog"><i style="width:${d/ls.length*100}%"></i></div><div class="ti-foot">${d}/${ls.length} LEKTIONEN</div></a>`;});
+ h+=`<a class="tile" href="#quiz" style="--ac:${QUIZCOL}"><div class="ti-top"><span class="ti-ico">🎯</span><span class="ti-num">QUIZ</span></div><h2>QUIZ</h2><p>10 zufällige Fragen: Bilder, Wissen und Rechenaufgaben.</p><div class="prog"><i style="width:${ST.best*10}%"></i></div><div class="ti-foot">BESTWERT ${ST.best}/10</div></a></div>`;
+ h+=`<div class="foot">◆ BAYAZIT GELD-SCHULE · KOMPASS DARK</div>`;
+ M.innerHTML=h;
+}
+function vArea(aid){
+ const a=areaOf(aid);if(!a)return vHome();
+ const ls=lessonsOf(aid),d=ls.filter(l=>ST.seen[l.id]).length;
+ M.innerHTML=`<a class="back" href="#home">← Startseite</a><div class="ahead" style="--ac:${a.col}"><span class="ti-ico">${a.icon}</span><h1>${a.name.toUpperCase()}</h1><p>${a.desc}</p><div class="prog"><i style="width:${d/ls.length*100}%"></i></div><div class="ti-foot">${d}/${ls.length} LEKTIONEN GESEHEN</div></div>
+ <div class="lgrid" style="--ac:${a.col}">${ls.map((l,i)=>`<a class="lcard" href="#l-${l.id}"><span class="lk">LEKTION ${i+1}</span><b>${l.t}</b><span class="lsub">${l.steps[0].say}</span>${ST.seen[l.id]?'<span class="done">✓</span>':''}</a>`).join('')}</div>`;
+}
+function vLesson(id){
+ const l=byId[id];if(!l)return vHome();
+ const a=areaOf(l.a),ls=lessonsOf(l.a),idx=ls.indexOf(l),prev=L[l.i-1],next=L[l.i+1];
+ M.innerHTML=`<a class="back" href="#b-${a.id}">← ${a.name}</a>
+ <div style="--ac:${a.col}"><div class="meta">LEKTION ${idx+1} · ${a.name.toUpperCase()}</div><h1 class="ltitle">${l.t}</h1>
+ <div class="player"><canvas id="cv" aria-label="Animation: ${l.t}"></canvas>
+  <div class="cap"><div class="sn" id="sn">SCHRITT 1 / ${l.steps.length}</div><p id="say"></p></div>
+  <div class="ctrl"><button class="pbtn" id="pb" aria-label="Abspielen/Pause">▶</button><input type="range" id="rg" min="0" max="1000" value="0" aria-label="Spulen"><span class="tm" id="tm">0:00</span></div>
+  <div class="ctrl2"><span id="spd" style="display:flex;gap:6px"><button class="sbtn" data-s=".5">½×</button><button class="sbtn on" data-s="1">1×</button><button class="sbtn" data-s="2">2×</button></span><button class="sbtn" id="rs" title="Neustart">⟲</button><span class="gap"></span><span id="steps" style="display:flex;gap:6px;flex-wrap:wrap">${l.steps.map((_,i)=>`<button class="sbtn">${i+1}</button>`).join('')}</span></div>
+ </div>
+ <div class="info">
+  <div class="ibox" style="--c:var(--blue)"><h3>WAS IST DAS?</h3><p>${l.info.was}</p></div>
+  <div class="ibox" style="--c:var(--green)"><h3>SO GEHT’S</h3><p>${l.info.so}</p></div>
+  <div class="ibox" style="--c:var(--gold)"><h3>WAS BEDEUTET ES?</h3><p>${l.info.bed}</p></div>
+  <div class="ibox" style="--c:var(--red)"><h3>TIPP</h3><p>${l.info.tipp}</p></div>
+ </div>
+ <div class="lnav"><a href="${prev?'#l-'+prev.id:'#'}" class="${prev?'':'dis'}"><small>← ZURÜCK</small>${prev?prev.t:'–'}</a><a class="nx ${next?'':'dis'}" href="${next?'#l-'+next.id:'#'}"><small>WEITER →</small>${next?next.t:'–'}</a></div></div>`;
+ setupPlayer(l);
+}
+
+/* ============ Quiz ============ */
+const KQ=[
+ ['Wie nennt man das Problem, dass beim Tausch beide genau das wollen müssen, was der andere hat?',['Fehlende doppelte Übereinstimmung der Wünsche','Inflation','Teilreserve','Münzverschlechterung'],'problem','Beim reinen Tausch müssen die Wünsche beider Seiten genau zusammenpassen.'],
+ ['Von welchem lateinischen Wort stammt „pecunia“ (Geld)?',['pecus – Vieh','pax – Frieden','pecca – Fehler','panis – Brot'],'warengeld','Vieh war früher Reichtum – daher pecunia von pecus.'],
+ ['Woher kommt die Redewendung „etwas auf dem Kerbholz haben“?',['Von Holzstäben, in die Schulden eingekerbt wurden','Von Holzmünzen der Römer','Von Holzkisten für Gold','Von hölzernen Waagen'],'schulden','Kerbhölzer hielten Schulden fest – jede Partei hatte eine Hälfte.'],
+ ['Wo wurden um 600 v. Chr. die ersten Münzen geprägt?',['Im Königreich Lydien (heutige Türkei)','In Ägypten','In Rom','In Griechenland'],'lydien','Die ersten Münzen kamen aus Lydien und bestanden aus Elektron.'],
+ ['Woraus bestanden die ersten lydischen Münzen?',['Elektron, einer Gold-Silber-Mischung','Reinem Kupfer','Eisen','Bronze'],'lydien','Elektron ist eine natürliche Mischung aus Gold und Silber.'],
+ ['Wie hieß die wichtigste Silbermünze des Römischen Reiches?',['Denar','Taler','Gulden','Pfennig'],'rom','Der Denar war rund 450 Jahre im Umlauf.'],
+ ['Woher stammen die Wörter „Münze“ und „money“?',['Vom Tempel der Juno Moneta','Vom König Krösus','Von der Stadt Monaco','Vom Wort „Mond“'],'rom','Beim Tempel der Juno Moneta in Rom wurde Geld geprägt.'],
+ ['Was bedeutet Münzverschlechterung?',['Der Edelmetallanteil wird heimlich gesenkt','Münzen werden größer','Münzen werden verboten','Münzen werden aus Papier'],'verfall','Weniger Silber pro Münze – mehr Münzen – steigende Preise.'],
+ ['Aus welchem Wort entstand „Dollar“?',['Taler','Dinar','Gulden','Denar'],'taler','Joachimsthaler → Taler → Dollar.'],
+ ['Welches Land gab das erste staatliche Papiergeld aus?',['China','Schweden','England','Italien'],'china','Um 1024 übernahm der Staat der Song-Dynastie die Jiaozi.'],
+ ['Was entstand aus den Goldschmiede-Quittungen in London?',['Das Teilreserve-System der Banken','Der Bitcoin','Die Kreditkarte','Der Goldstandard'],'goldschmied','Mehr Quittungen als Gold im Tresor – das ist Teilreserve.'],
+ ['Was bedeutet „banca rotta“, aus dem „bankrott“ wurde?',['Zerbrochene Bank','Rote Bank','Reiche Bank','Neue Bank'],'banken','Konnte ein Wechsler nicht zahlen, wurde seine Bank zerbrochen.'],
+ ['Welche Bank gab 1661 die ersten Banknoten Europas aus?',['Stockholms Banco','Bank of England','Deutsche Bundesbank','Banca Medici'],'banknoten','Die schwedische Stockholms Banco war Vorreiter.'],
+ ['Was war der Goldstandard?',['Banknoten konnten gegen eine feste Menge Gold getauscht werden','Alle Münzen waren aus Gold','Nur Gold durfte gehandelt werden','Gold war verboten'],'goldstandard','Jede Geldeinheit war durch eine feste Goldmenge gedeckt.'],
+ ['Was ist das wichtigste Ziel der Europäischen Zentralbank?',['Stabile Preise (rund 2 % Inflation)','Möglichst viele Kredite','Hohe Aktienkurse','Viel Gold kaufen'],'zentralbank','Die EZB strebt mittelfristig rund 2 % Inflation an.'],
+ ['Was geschah am 15. August 1971?',['Die USA beendeten den Umtausch von Dollar in Gold','Der Euro wurde eingeführt','Die D-Mark kam','Bitcoin startete'],'bretton','Präsident Nixon schloss das „Goldfenster“ – seitdem gibt es Fiatgeld.'],
+ ['Was bedeutet „Fiatgeld“?',['Geld ohne Golddeckung, das auf Vertrauen und Gesetz beruht','Geld aus Italien','Geld aus Gold','Geld nur für Autos'],'bretton','„Fiat“ heißt „es werde“ – Geld, weil der Staat es so bestimmt.'],
+ ['Wie entsteht der größte Teil des heutigen Geldes?',['Durch Kredite der Geschäftsbanken','Durch Gelddrucken in Kellern','Durch Goldminen','Durch Steuern'],'giral','Bei jeder Kreditvergabe entsteht neues Giralgeld.'],
+ ['Wie viel kostete im November 1923 ein US-Dollar?',['4,2 Billionen Mark','4,20 Mark','42.000 Mark','4,2 Millionen Mark'],'inflation','Die Hyperinflation entwertete die Mark völlig.'],
+ ['Wann wurde die D-Mark eingeführt?',['20. Juni 1948','1. Januar 2002','3. Oktober 1990','1871'],'euro','Die Währungsreform von 1948 brachte die D-Mark.'],
+ ['Seit wann gibt es Euro-Scheine und -Münzen?',['1. Januar 2002','1. Januar 1999','1. Januar 1995','20. Juni 1948'],'euro','1999 kam der Euro als Buchgeld, 2002 als Bargeld.'],
+ ['Welche Firma brachte 1950 die erste Kreditkarte heraus?',['Diners Club','Visa','Mastercard','PayPal'],'karte','Der Diners Club startete zuerst mit Restaurants.'],
+ ['Wie lange darf eine Echtzeitüberweisung in der EU höchstens dauern?',['10 Sekunden','1 Tag','1 Stunde','3 Tage'],'handy','Seit 2025 müssen Banken Echtzeitüberweisungen anbieten.'],
+ ['Wie viele Bitcoin kann es höchstens geben?',['21 Millionen','100 Millionen','1 Milliarde','Unbegrenzt'],'bitcoin','Die Höchstmenge ist im Programm festgelegt.'],
+ ['Wer hat Bitcoin erfunden?',['Satoshi Nakamoto (unbekannte Person)','Elon Musk','Die EZB','Bill Gates'],'bitcoin','Wer sich hinter dem Namen verbirgt, ist bis heute unbekannt.'],
+ ['Was ist der digitale Euro?',['Digitales Bargeld der Zentralbank mit festem Wert','Eine neue Kryptowährung mit schwankendem Kurs','Eine Kreditkarte','Ein Bitcoin-Ableger'],'digitaleuro','1 digitaler Euro wäre immer 1 Euro wert.'],
+ ['Welche drei Aufgaben hat Geld?',['Tauschmittel, Wertmaß, Wertspeicher','Sparen, Schenken, Spielen','Drucken, Prägen, Leihen','Kaufen, Verkaufen, Tauschen'],'zukunft','Diese drei Aufgaben erfüllt jede Geldform.']
+];
+const rnd=n=>Math.floor(Math.random()*n);
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const fmt=(v,d=2)=>v.toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
+function calcQ(){
+ const k=rnd(5);
+ if(k===0){const dm=[100,250,500,1000,2000][rnd(5)],e=dm/1.95583;return{q:`Rechenaufgabe: Wie viel Euro sind ${dm.toLocaleString('de-DE')} D-Mark? (1 € = 1,95583 DM)`,opts:[fmt(e)+' €',fmt(dm*1.95583)+' €',fmt(dm/1.5)+' €',fmt(dm*.4)+' €'],l:'euro',exp:`${dm.toLocaleString('de-DE')} ÷ 1,95583 ≈ ${fmt(e)} €.`};}
+ if(k===1){const r=[2,3,4,6,8][rnd(5)],y=72/r;return{q:`Rechenaufgabe: Nach etwa wie vielen Jahren halbiert sich die Kaufkraft bei ${r} % Inflation? (Faustregel 72)`,opts:[`ca. ${fmt(y,0)} Jahre`,`ca. ${fmt(y*2,0)} Jahre`,`ca. ${fmt(r*2,0)} Jahre`,`ca. ${fmt(100/r+5,0)} Jahre`],l:'inflation',exp:`72 ÷ ${r} = ${fmt(y,0)} Jahre.`};}
+ if(k===2){const n=[5,6,8,12][rnd(4)],v=n*(n-1)/2;return{q:`Rechenaufgabe: Wie viele Tauschverhältnisse gibt es bei ${n} Waren ohne Geld?`,opts:[String(v),String(n*n),String(n*(n-1)),String(n*2)],l:'problem',exp:`${n} · ${n-1} ÷ 2 = ${v}.`};}
+ if(k===3){const p=[2,4,5,10][rnd(4)],r=[2,5,10][rnd(3)],v=p*(1+r/100);return{q:`Rechenaufgabe: Ein Brot kostet ${fmt(p)} €. Wie viel kostet es nach einem Jahr mit ${r} % Inflation?`,opts:[fmt(v)+' €',fmt(p+r)+' €',fmt(p*(1-r/100))+' €',fmt(p*(1+r/10))+' €'],l:'inflation',exp:`${fmt(p)} € · ${fmt(1+r/100)} = ${fmt(v)} €.`};}
+ const m=[100,500,1000][rnd(3)],g=m*1000/2790;return{q:`Rechenaufgabe: Wie viel Gramm Gold entsprachen ${m.toLocaleString('de-DE')} Mark im Goldstandard? (2.790 Mark = 1 kg)`,opts:[`ca. ${fmt(g,1)} g`,`ca. ${fmt(g*10,1)} g`,`ca. ${fmt(m/27.9*0.1,1)} g`,`ca. ${fmt(g*2.79,1)} g`],l:'goldstandard',exp:`${m.toLocaleString('de-DE')} × 1.000 g ÷ 2.790 ≈ ${fmt(g,1)} g.`};
+}
+function picQ(){const l=L[rnd(L.length)],others=shuf(L.filter(x=>x!==l)).slice(0,3);return{pic:l,q:'Bilderfrage: Zu welcher Lektion gehört dieses Bild?',opts:[l.t,...others.map(o=>o.t)],l:l.id,exp:`Das Bild stammt aus der Lektion „${l.t}“.`};}
+let QZ=null;
+function newQuiz(){
+ const ks=shuf(KQ).slice(0,5).map(k=>({q:k[0],opts:k[1],l:k[2],exp:k[3]}));
+ const qs=shuf([...ks,picQ(),picQ(),calcQ(),calcQ(),calcQ()]);
+ qs.forEach(x=>{const right=x.opts[0];x.sh=shuf(x.opts);x.ok=x.sh.indexOf(right);});
+ QZ={qs,i:0,pts:0,wrong:[],ans:null};
+}
+function vQuiz(){
+ if(!QZ){M.innerHTML=`<a class="back" href="#home">← Startseite</a><div class="qcard" style="text-align:center"><div style="font-size:52px">🎯</div><h1 class="ltitle" style="margin-top:6px">Geld-Quiz</h1><p style="color:var(--mut)">10 zufällige Fragen – Bilderfragen, Wissensfragen und Rechenaufgaben.</p><div class="score" style="font-size:20px">BESTWERT ${ST.best}/10</div><button class="big" id="go">QUIZ STARTEN</button></div>`;
+  document.getElementById('go').onclick=()=>{newQuiz();vQuiz();};return;}
+ if(QZ.i>=QZ.qs.length){
+  const nb=QZ.pts>ST.best;if(nb){ST.best=QZ.pts;}ST.runs++;save();renderSide();
+  const rep=[...new Set(QZ.wrong)];
+  M.innerHTML=`<a class="back" href="#home">← Startseite</a><div class="qcard"><div class="qtop"><span>ERGEBNIS</span><span>BESTWERT ${ST.best}/10</span></div><div class="score" style="color:${QZ.pts>=8?'var(--green)':QZ.pts>=5?'var(--gold)':'var(--red)'}">${QZ.pts}/10</div><p style="text-align:center;color:var(--mut)">${nb?'🏆 Neuer Bestwert!':QZ.pts>=8?'Stark – du kennst dich aus!':QZ.pts>=5?'Gut! Mit etwas Wiederholung schaffst du mehr.':'Schau dir die Lektionen noch einmal an.'}</p>
+  ${rep.length?`<div class="rep" style="margin-top:14px"><div class="meta" style="color:var(--mut)">ZUM WIEDERHOLEN</div>${rep.map(id=>`<a href="#l-${id}">▶ ${byId[id].t} <span style="color:var(--mut);font-size:12px">· ${areaOf(byId[id].a).name}</span></a>`).join('')}</div>`:''}
+  <button class="big" id="again">NOCH EINMAL</button></div>`;
+  document.getElementById('again').onclick=()=>{newQuiz();vQuiz();};QZ=null;return;}
+ const x=QZ.qs[QZ.i];
+ M.innerHTML=`<a class="back" href="#home">← Startseite</a><div class="qcard"><div class="qtop"><span>FRAGE ${QZ.i+1} / 10</span><span>PUNKTE ${QZ.pts}</span></div><div class="qbar"><i style="width:${QZ.i*10}%"></i></div>
+ ${x.pic?'<div class="qimg"><canvas id="qcv"></canvas></div>':''}<div class="qq">${x.q}</div><div class="opts">${x.sh.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}</div><div id="fb"></div></div>`;
+ if(x.pic){const cv=document.getElementById('qcv'),les=x.pic;const d=()=>paint(cv,les,les.steps.length-1,1);redrawHooks=[d];requestAnimationFrame(d);}
+ M.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+  const i=+b.dataset.i,ok=i===x.ok;
+  M.querySelectorAll('.opt').forEach((o,j)=>{o.disabled=true;if(j===x.ok)o.classList.add('ok');else if(j===i)o.classList.add('no');});
+  if(ok)QZ.pts++;else QZ.wrong.push(x.l);
+  document.getElementById('fb').innerHTML=`<div class="fb"><b style="color:${ok?'var(--green)':'var(--red)'}">${ok?'✓ RICHTIG!':'✗ LEIDER FALSCH'}</b><div style="margin-top:4px">${x.exp}</div><a class="go" href="#l-${x.l}">→ Zur Lektion „${byId[x.l].t}“</a></div><button class="big" id="nx">${QZ.i<9?'NÄCHSTE FRAGE →':'ERGEBNIS ANZEIGEN'}</button>`;
+  document.getElementById('nx').onclick=()=>{QZ.i++;vQuiz();window.scrollTo(0,0);};
+ });
+}
+
+/* ============ Router ============ */
+function route(){
+ stopPlayer();redrawHooks=[];
+ const h=location.hash.replace(/^#/,'')||'home',m=h.match(/^(b|l)-([\w-]+)$/),p=m?[m[1],m[2]]:[h];
+ if(p[0]!=='quiz')QZ=null;
+ if(p[0]==='b')vArea(p[1]);else if(p[0]==='l')vLesson(p[1]);else if(p[0]==='quiz')vQuiz();else vHome();
+ renderSide();window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+readPal();applyTheme();route();
+if('serviceWorker' in navigator&&location.protocol==='https:'&&!/claude|anthropic/.test(location.hostname)){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+</script>
+</body>
+</html>
